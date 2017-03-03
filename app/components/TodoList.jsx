@@ -4,7 +4,9 @@ import Todo from 'Todo';
 var TodoAPI = require('TodoAPI');
 
 export var TodoList = React.createClass({
-  render: function(){
+
+  render(){
+    console.log(this.props);
     var {todos, showCompleted, searchText} = this.props;
     var renderTodos = () => {
       if (todos.length === 0){
