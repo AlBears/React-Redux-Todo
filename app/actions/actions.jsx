@@ -95,6 +95,19 @@ export var startToggleTodo = (id, completed) => {
   };
 };
 
+export var startEditTextTodo = (newText, id) => {
+  return (dispatch, getState) => {
+    var uid = getState().auth.uid,
+        todoRef = firebaseRef.child(`users/${uid}/todos/${id}`),
+        updates = {
+      text: newText
+    };
+    return todoRef.update(updates).then(() => {
+      dispatch(updateTodo(id, updates));
+    });
+}
+}
+
 export var login = (uid) => {
   return {
     type: 'LOGIN',

@@ -4,6 +4,11 @@ var moment = require('moment');
 var actions = require('actions');
 
 export var Todo = React.createClass({
+  editTodo() {
+    var newText = this.refs.myRef.innerText,
+        { dispatch, id } = this.props;
+    dispatch(actions.startEditTextTodo(newText, id));
+  },
   render(){
     var {id, text, completed, createdAt, completedAt, dispatch} = this.props;
     var todoClassName = completed ? 'todo todo-completed' : 'todo';
@@ -19,13 +24,12 @@ export var Todo = React.createClass({
       return message + moment.unix(timestamp).format('MMM Do YYYY @ h:mm a');
     };
     return (
-      <div className={todoClassName} onClick={()=> {
-          //this.props.onToggle(id);
-          dispatch(actions.startToggleTodo(id, !completed));
-        }}>
-        <div><input type="checkbox" checked={completed}/></div>
+      <div className={todoClassName} >
+        <div><input type="checkbox" checked={completed} onClick={()=> {
+            dispatch(actions.startToggleTodo(id, !completed));
+          }}/></div>
         <div>
-          <p>{text}</p>
+          <p contentEditable = "true" onBlur={this.editTodo} ref = "myRef">{text}</p>
           <p className="todo__subtext">{renderDate()}</p>
         </div>
       </div>
